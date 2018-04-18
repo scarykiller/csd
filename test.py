@@ -5,7 +5,10 @@ from docx import Document
 
 from docx import Document
 from docx.shared import Inches
-document = Document("D:\Documents\CSD\  \testWord")
+document = Document("D:\Documents\CSD\\testWord.docx")
+
+
+
 
 
 wb = xlrd.open_workbook("D:\Documents\CSD\\test.xls");
@@ -19,4 +22,3 @@ colonne1 = (sh.row_values(1));
 
 print(colonne1);
 print(colonne1[0]);
-
