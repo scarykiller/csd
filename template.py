@@ -10,6 +10,16 @@ locale.setlocale(locale.LC_TIME, '')  # Heure en Français
 dateActuelle = time.strftime('%d %B %Y')
 
 numberLines = 0;
+document = Document(r"C:\Users\ppintus\Documents\csd\courrier.docx")
+
+
+wb = xlrd.open_workbook(r"C:\Users\ppintus\Documents\csd\\testexcel.xls");
+
+sh = wb.sheet_by_name('Feuil1')
+
+nombreLigne = (len(sh.col_values(0)))
+nombreColonne = sh.row_len(0);
+
 
 
 def docx_replace_regex(doc_obj, regex, replace):
@@ -28,16 +38,21 @@ def docx_replace_regex(doc_obj, regex, replace):
                 docx_replace_regex(cell, regex, replace)
 
 
-document = Document(r"C:\Users\ppintus\Documents\csd\courrier.docx")
-wb = xlrd.open_workbook(r"C:\Users\ppintus\Documents\csd\\testexcel.xls");
 
-sh = wb.sheet_by_name('Feuil1')
+regex = re.compile(r"champ1");
+replace = str(int(round((sh.row_values(1)[0]))))
+docx_replace_regex(document, regex, replace);
 
-nombreLigne = (len(sh.col_values(0)))
-nombreColonne = sh.row_len(0);
 
-print(nombreLigne)
-print(nombreColonne)
+regex = re.compile(r"champ3");
+replace = str(sh.row_values(1)[3]);
+docx_replace_regex(document, regex, replace);
+
+
+
+
+
+
 
 cell_type = sh.cell_type(5, 3)
 if (cell_type == xlrd.XL_CELL_EMPTY):
@@ -45,36 +60,68 @@ if (cell_type == xlrd.XL_CELL_EMPTY):
 else:
     print(cell_type)
 
-regex = re.compile(r"champ1");
-replace = str(int(round((sh.row_values(1)[0]))))
-docx_replace_regex(document, regex, replace);
-
-regex = re.compile(r"champ2")
-replace = dateActuelle;
-docx_replace_regex(document, regex, replace)
-
-regex = re.compile(r"champ3");
-replace = str(sh.row_values(1)[3]);
-docx_replace_regex(document, regex, replace);
-
-regex = re.compile(r"champ4")
-replace = (sh.row_values(1)[4]);
-replace = str(int(round(replace)))  # Passe de float à int
-
-docx_replace_regex(document, regex, replace)
-
-regex = re.compile(r"champ5")
-replace = str(sh.row_values(1)[5]);
-docx_replace_regex(document, regex, replace)
-
-regex = re.compile(r"champ6")
-replace = str(int(round((sh.row_values(1)[6]))));
-docx_replace_regex(document, regex, replace)
 
 for i in range(1, nombreLigne):
+    if (type(sh.row_values(i)[1]) is str):
+        replace = sh.row_values(i)[1]
+    else:
+        replace = int(sh.row_values(i)[1])
+        replace = str(replace)
 
-# Save
-document.save(r"C:\Users\ppintus\Documents\csd\courrier2.docx")
+    docx_replace_regex(document, regex, replace)
+    document.save(r"C:\Users\ppintus\Documents\csd\courrierTest" + str(i) + "." + "docx")
+
+    regex = re.compile(r"champ2")
+    replace = dateActuelle;
+    docx_replace_regex(document, regex, replace)
+    document.save(r"C:\Users\ppintus\Documents\csd\courrierTest"+str(i)+"."+"docx")
+
+    regex = re.compile(r"champ3");
+    replace = str(sh.row_values(i)[3]);
+    docx_replace_regex(document, regex, replace);
+
+    document.save(r"C:\Users\ppintus\Documents\csd\courrierTest"+str(i)+"."+"docx")
+
+    regex = re.compile(r"champ4")
+    if (type(sh.row_values(i)[4]) is str):
+        replace = sh.row_values(i)[4]
+    else:
+        replace=int(sh.row_values(i)[4])
+        replace=str(replace)
+
+    docx_replace_regex(document, regex, replace)
+    document.save(r"C:\Users\ppintus\Documents\csd\courrierTest"+str(i)+"."+"docx")
+
+
+    regex =re.compile(r"champ5")
+    replace = sh.row_values(i)[5];
+    replace = str(replace)
+    docx_replace_regex(document,regex,replace)
+    document.save(r"C:\Users\ppintus\Documents\csd\courrierTest"+str(i)+"."+"docx")
+
+
+
+    regex = re.compile(r"champ6")
+    if (type(sh.row_values(i)[6]) is str):
+        replace = sh.row_values(i)[6]
+    else:
+        replace=int(sh.row_values(i)[6])
+        replace=str(replace)
+    docx_replace_regex(document,regex,replace)
+    document.save(r"C:\Users\ppintus\Documents\csd\courrierTest"+str(i)+"."+"docx")
+
+
+
+    docx_replace_regex(document, regex, replace)
+    document.save(r"C:\Users\ppintus\Documents\csd\courrierTest"+str(i)+"."+"docx")
+
+
+
+    document =Document(r"C:\Users\ppintus\Documents\csd\courrier.docx");
+
+
+
+
 
 # document.save(r"C:\Users\ppintus\Documents\csd\courrier.docx")
 

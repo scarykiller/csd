@@ -75,7 +75,6 @@ regex=re.compile(r"champ6")
 replace=str(int(round((sh.row_values(1)[6]))));
 docx_replace_regex(document,regex,replace)
 
-for i in range(1,nombreLigne):
 
 
 
