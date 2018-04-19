@@ -2,7 +2,6 @@ import xlrd
 import re
 from docx import Document
 import locale
-from itertools import takewhile
 import time
 
 locale.setlocale(locale.LC_TIME, '')  # Heure en Français
@@ -38,35 +37,14 @@ def docx_replace_regex(doc_obj, regex, replace):
                 docx_replace_regex(cell, regex, replace)
 
 
-
-regex = re.compile(r"champ1");
-replace = str(int(round((sh.row_values(1)[0]))))
-docx_replace_regex(document, regex, replace);
-
-
-regex = re.compile(r"champ3");
-replace = str(sh.row_values(1)[3]);
-docx_replace_regex(document, regex, replace);
-
-
-
-
-
-
-
-cell_type = sh.cell_type(5, 3)
-if (cell_type == xlrd.XL_CELL_EMPTY):
-    print("Cette cellule est blanche")
-else:
-    print(cell_type)
-
-
 for i in range(1, nombreLigne):
-    if (type(sh.row_values(i)[1]) is str):
-        replace = sh.row_values(i)[1]
+
+    if (type(sh.row_values(i)[0]) is str):
+        replace = sh.row_values(i)[0]
     else:
-        replace = int(sh.row_values(i)[1])
+        replace = int(sh.row_values(i)[0])
         replace = str(replace)
+    regex = re.compile(r"champ1")
 
     docx_replace_regex(document, regex, replace)
     document.save(r"C:\Users\ppintus\Documents\csd\courrierTest" + str(i) + "." + "docx")
@@ -117,21 +95,4 @@ for i in range(1, nombreLigne):
 
 
 
-    document =Document(r"C:\Users\ppintus\Documents\csd\courrier.docx");
-
-
-
-
-
-# document.save(r"C:\Users\ppintus\Documents\csd\courrier.docx")
-
-
-# regex1 = re.compile(r"Caverne")
-# replace1 = r"Monsieur le président"
-# docx_replace_regex(document, regex1 , replace1)
-
-
-# docx_replace_regex((document,regex,replace1));
-# document.save(r"C:\Users\ppintus\Documents\csd\courrier1.docx")
-
-
+    document =Document(r"C:\Users\ppintus\Documents\csd\courrier.docx"); #Pour revenir au document de base à traiter
